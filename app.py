@@ -6,6 +6,8 @@ from flask import Flask, render_template, request, jsonify, send_from_directory,
 from flask_cors import CORS
 from pydub import AudioSegment
 import tempfile
+from datetime import datetime
+import os
 
 app = Flask(__name__)
 CORS(app)
@@ -145,6 +147,17 @@ def index():
     Renders the main HTML page for the client-side audio player.
     """
     return render_template('index.html') 
+
+@app.route('/health')
+def health():
+    return {
+        "status": "healthy",
+        "version": os.getenv("APP_VERSION", "2.0"),
+        "deployment_method": os.getenv("DEPLOY_METHOD", "GitHub Actions + AWS SSM"),
+        "build_sha": os.getenv("GITHUB_SHA", "unknown"),
+        "build_time": os.getenv("BUILD_TIME", "unknown"),
+        "timestamp": datetime.now().isoformat()
+    }
 
 @app.route('/select_directory', methods=['POST'])
 def select_directory():
