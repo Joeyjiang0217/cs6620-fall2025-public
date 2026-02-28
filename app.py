@@ -141,6 +141,7 @@ def serve_audio_segment():
         app.logger.error(f"Error extracting audio segment: {e}")
         return f"Error extracting audio segment: {str(e)}", 500
 
+
 @app.route('/')
 def index():
     """
